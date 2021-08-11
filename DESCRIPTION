@@ -1,0 +1,16 @@
+Package: cochrane
+Title: Import Data from the Cochrane Database of Systematic Reviews (CDSR)
+Version: 0.1
+Authors@R: 
+    person(given = "Simon",
+           family = "Schwab",
+           role = c("aut", "cre"),
+           email = "schw4b@gmail.com",
+           comment = c(ORCID = "0000-0002-1588-2689"))
+Description: The Cochrane Library is probably the lagest body of evidence in health care. This packages loads datasets from systematic reviews from <https://www.cochranelibrary.com/> that include all the study data, effect estimates, and the combined effect estimates from meta-analyses.
+Imports: xml2 (>= 1.3.2), rvest (>= 0.3.5)
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
