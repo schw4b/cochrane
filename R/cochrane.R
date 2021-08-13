@@ -1,17 +1,24 @@
-#' Reads data from a systematic review from a RevMan data file (XML) from the Cochrane Library.
-#' @param path path to file.
-#' @param file  filename.
+#' Reads all the data from a systematic review from a RevMan data file (XML) from the Cochrane Library, including both study data and meta-analytic data.
+#' @param path path where data file is located.
+#' @param file  RevMan (.rm5) file name.
 #'
 #' @return a list with two objects (data.frames), a table of the study data, and a table of the meta-analytic data.
 #' 
 #' @export
 read.review = function(file, path) {
-
+  
   return(list(parse.studies(file, path),
               parse.ma(file, path)
-              ))
+  ))
 }
 
+#' Reads only study data.
+#' @param path path where data file is located.
+#' @param file  RevMan (.rm5) file name.
+#'
+#' @return data frame with data from a study per row.
+#' 
+#' @export
 #' @importFrom xml2 read_xml
 #' @importFrom rvest html_nodes html_node html_attr html_text
 parse.studies = function(file, path) {
@@ -180,6 +187,13 @@ parse.studies = function(file, path) {
   return(tab)
 }
 
+#' Reads only meta-analytic data.
+#' @param path path where data file is located.
+#' @param file  RevMan (.rm5) file name.
+#'
+#' @return data frame with data from a meta-analysis per row.
+#' 
+#' @export
 #' @importFrom xml2 read_xml
 #' @importFrom rvest html_nodes html_node html_attr html_text
 parse.ma = function(file, path) {
@@ -269,4 +283,51 @@ parse.ma = function(file, path) {
 
 cleanstr = function(string) {
   return(gsub("\n|\"|\\\\|[[:space:]]*$", "", string))
+}
+
+#' Gets the data directly from the Cochrane Library with a html session.
+#' @param doi  doi address (full http URL or short version).
+#' @param path path to store data file.
+#' @param show.terms whether to show link to Cochrane's Terms and Conditions.
+#' 
+#' @export
+#' @importFrom httr content user_agent
+#' @importFrom rvest jump_to html_session
+get.review = function(doi, path, show.terms = TRUE) {
+  
+  msg = "The data available are protected by copyright and may only be used in accordance with\nthe Terms and Conditions, see https://www.cochranelibrary.com/about/data-download.\nBy using the downloaded data you agree to these terms and conditions."
+  
+  if (grepl("https://doi.org/", doi)) {
+    doi = sub('(^https://doi.org/)(.*)', '\\2', doi)
+  }
+  
+  id = sub('.*(CD[0-9]{6}).*', '\\1', doi)
+  file = paste0(id, "StatsDataOnly.rm5")
+  url = paste0("https://www.cochranelibrary.com/cdsr/doi/", doi)
+  url_data = paste0(url, "/media/CDSR/", id, "/table_n/", file)
+  
+  # create www session
+  #ua = user_agent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36")
+  ua = user_agent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36")
+  session_with_ua = html_session(url, ua)
+  if (!session_with_ua$response$status_code == 200) {
+    message(paste(Sys.time(), "error: could not open html session for", id, "\n"))
+  } else {
+    session_data = jump_to(session_with_ua, url_data) # jump to dataset
+    
+    # write to file if session is ok
+    if (session_data$response$status_code == 200) {
+      
+      if (show.terms) {
+        message(msg)
+      }
+      
+      bin = content(session_data$response, as = "raw")
+      writeBin(bin, file.path(path, file))
+      message(paste(Sys.time(), "ok: download successful for", id, "\n"))
+      
+    } else {
+      message(paste(Sys.time(), "error: could not download data for", id, "\n"))
+    }
+  }
 }

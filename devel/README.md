@@ -1,6 +1,6 @@
 # Developer Guide
 
-Build the package
+Building the package
 
     make clean
     cd cochrane; R -e 'devtools::document()'; cd ..
@@ -13,4 +13,3 @@ Install and test in R
 
     R CMD REMOVE cochrane
     R CMD INSTALL cochrane_0.1.tar.gz
-    R
