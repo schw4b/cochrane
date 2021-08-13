@@ -12,7 +12,7 @@
 
 <meta name="author" content="Simon Schwab" />
 
-<meta name="date" content="2021-08-12" />
+<meta name="date" content="2021-08-13" />
 
 <title>Import Data from the Cochrane Database of Systematic Reviews (CDSR)</title>
 
@@ -135,7 +135,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <h1 class="title toc-ignore">Import Data from the Cochrane Database of Systematic Reviews (CDSR)</h1>
 <h4 class="author">Simon Schwab</h4>
-<h4 class="date">2021-08-12</h4>
+<h4 class="date">2021-08-13</h4>
 
 
 
@@ -157,7 +157,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The data available are protected by copyright and may only be used in accordance with</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; the Terms and Conditions, see https://www.cochranelibrary.com/about/data-download.</span></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; By using the downloaded data you agree to these terms and conditions.</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2021-08-12 17:32:34 ok: download successful for CD000059</span></span></code></pre></div>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2021-08-13 18:42:42 ok: download successful for CD000059</span></span></code></pre></div>
 <p>The other option to access the data is to go to the Website of that specific review (<a href="https://doi.org/10.1002/14651858.CD000059.pub2" class="uri">https://doi.org/10.1002/14651858.CD000059.pub2</a>) and manually download the data file by clicking “Download Statistical Data” in the right box at the bottom. Once you have the data in your Download folder, for example, the following command will load the data:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>review <span class="ot">=</span> <span class="fu">read.review</span>(<span class="at">file =</span> <span class="st">&quot;CD000059StatsDataOnly.rm5&quot;</span>, <span class="at">path =</span> dl_path)</span></code></pre></div>
 </div>
@@ -193,8 +193,11 @@ hasSubgroups
 <th style="text-align:left;">
 isSubgroup
 </th>
+<th style="text-align:left;">
+effect.measure
+</th>
 <th style="text-align:right;">
-effect
+effect.size
 </th>
 <th style="text-align:right;">
 ci_start
@@ -230,10 +233,28 @@ I2
 tau2
 </th>
 <th style="text-align:right;">
+Q
+</th>
+<th style="text-align:right;">
+p_Q
+</th>
+<th style="text-align:right;">
 total1
 </th>
 <th style="text-align:right;">
 total2
+</th>
+<th style="text-align:left;">
+random
+</th>
+<th style="text-align:left;">
+totals
+</th>
+<th style="text-align:left;">
+subgroups
+</th>
+<th style="text-align:left;">
+subgroup.test
 </th>
 </tr>
 </thead>
@@ -259,6 +280,9 @@ TRUE
 </td>
 <td style="text-align:left;">
 FALSE
+</td>
+<td style="text-align:left;">
+RR
 </td>
 <td style="text-align:right;">
 0.7600006
@@ -297,10 +321,28 @@ YES
 0
 </td>
 <td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
 933
 </td>
 <td style="text-align:right;">
 905
+</td>
+<td style="text-align:left;">
+NO
+</td>
+<td style="text-align:left;">
+SUB
+</td>
+<td style="text-align:left;">
+YES
+</td>
+<td style="text-align:left;">
+NO
 </td>
 </tr>
 </tbody>
@@ -365,10 +407,22 @@ study.year
 study.data_source
 </th>
 <th style="text-align:right;">
-effect
+effect.size
 </th>
 <th style="text-align:right;">
 se
+</th>
+<th style="text-align:right;">
+ci.lower
+</th>
+<th style="text-align:right;">
+ci.upper
+</th>
+<th style="text-align:right;">
+weight
+</th>
+<th style="text-align:right;">
+order
 </th>
 <th style="text-align:right;">
 events1
@@ -456,6 +510,18 @@ PUB
 0.1958210
 </td>
 <td style="text-align:right;">
+0.4097842
+</td>
+<td style="text-align:right;">
+0.8829203
+</td>
+<td style="text-align:right;">
+5.3109430
+</td>
+<td style="text-align:right;">
+36
+</td>
+<td style="text-align:right;">
 12
 </td>
 <td style="text-align:right;">
@@ -537,6 +603,18 @@ PUB
 </td>
 <td style="text-align:right;">
 0.2001761
+</td>
+<td style="text-align:right;">
+0.6028109
+</td>
+<td style="text-align:right;">
+1.3211788
+</td>
+<td style="text-align:right;">
+5.6279024
+</td>
+<td style="text-align:right;">
+37
 </td>
 <td style="text-align:right;">
 19
@@ -622,6 +700,18 @@ PUB
 0.5411628
 </td>
 <td style="text-align:right;">
+0.1978442
+</td>
+<td style="text-align:right;">
+1.6504430
+</td>
+<td style="text-align:right;">
+1.9100760
+</td>
+<td style="text-align:right;">
+38
+</td>
+<td style="text-align:right;">
 4
 </td>
 <td style="text-align:right;">
@@ -703,6 +793,18 @@ PUB
 </td>
 <td style="text-align:right;">
 0.2577131
+</td>
+<td style="text-align:right;">
+0.3334801
+</td>
+<td style="text-align:right;">
+0.9158018
+</td>
+<td style="text-align:right;">
+4.6660427
+</td>
+<td style="text-align:right;">
+39
 </td>
 <td style="text-align:right;">
 9
@@ -788,6 +890,18 @@ PUB
 0.1762928
 </td>
 <td style="text-align:right;">
+0.4847679
+</td>
+<td style="text-align:right;">
+0.9675094
+</td>
+<td style="text-align:right;">
+13.7290535
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:right;">
 34
 </td>
 <td style="text-align:right;">
@@ -869,6 +983,18 @@ PUB
 </td>
 <td style="text-align:right;">
 0.1625476
+</td>
+<td style="text-align:right;">
+0.5868433
+</td>
+<td style="text-align:right;">
+1.1097976
+</td>
+<td style="text-align:right;">
+7.5665558
+</td>
+<td style="text-align:right;">
+41
 </td>
 <td style="text-align:right;">
 23
@@ -954,6 +1080,18 @@ PUB
 0.1426311
 </td>
 <td style="text-align:right;">
+0.5463822
+</td>
+<td style="text-align:right;">
+0.9556794
+</td>
+<td style="text-align:right;">
+5.5743034
+</td>
+<td style="text-align:right;">
+42
+</td>
+<td style="text-align:right;">
 15
 </td>
 <td style="text-align:right;">
@@ -1035,6 +1173,18 @@ PUB
 </td>
 <td style="text-align:right;">
 0.1190537
+</td>
+<td style="text-align:right;">
+0.6091411
+</td>
+<td style="text-align:right;">
+0.9713939
+</td>
+<td style="text-align:right;">
+9.6989030
+</td>
+<td style="text-align:right;">
+43
 </td>
 <td style="text-align:right;">
 27
@@ -1120,6 +1270,18 @@ PUB
 0.2521615
 </td>
 <td style="text-align:right;">
+0.7407653
+</td>
+<td style="text-align:right;">
+1.9904953
+</td>
+<td style="text-align:right;">
+3.8201520
+</td>
+<td style="text-align:right;">
+44
+</td>
+<td style="text-align:right;">
 17
 </td>
 <td style="text-align:right;">
@@ -1201,6 +1363,18 @@ PUB
 </td>
 <td style="text-align:right;">
 0.5738756
+</td>
+<td style="text-align:right;">
+0.1416355
+</td>
+<td style="text-align:right;">
+1.3431972
+</td>
+<td style="text-align:right;">
+2.3317811
+</td>
+<td style="text-align:right;">
+45
 </td>
 <td style="text-align:right;">
 4
@@ -1286,6 +1460,18 @@ MIX
 0.0606972
 </td>
 <td style="text-align:right;">
+0.6427090
+</td>
+<td style="text-align:right;">
+0.8153525
+</td>
+<td style="text-align:right;">
+35.1510997
+</td>
+<td style="text-align:right;">
+46
+</td>
+<td style="text-align:right;">
 88
 </td>
 <td style="text-align:right;">
@@ -1367,6 +1553,18 @@ MIX
 </td>
 <td style="text-align:right;">
 0.6264377
+</td>
+<td style="text-align:right;">
+0.2416736
+</td>
+<td style="text-align:right;">
+2.8162987
+</td>
+<td style="text-align:right;">
+1.0394971
+</td>
+<td style="text-align:right;">
+47
 </td>
 <td style="text-align:right;">
 3
@@ -1452,6 +1650,18 @@ PUB
 0.7211103
 </td>
 <td style="text-align:right;">
+0.0486653
+</td>
+<td style="text-align:right;">
+0.8219401
+</td>
+<td style="text-align:right;">
+2.7286800
+</td>
+<td style="text-align:right;">
+48
+</td>
+<td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
@@ -1533,6 +1743,18 @@ PUB
 </td>
 <td style="text-align:right;">
 0.7331439
+</td>
+<td style="text-align:right;">
+0.2228015
+</td>
+<td style="text-align:right;">
+3.9447956
+</td>
+<td style="text-align:right;">
+0.8450106
+</td>
+<td style="text-align:right;">
+49
 </td>
 <td style="text-align:right;">
 3
@@ -1618,6 +1840,18 @@ MIX
 0.0861662
 </td>
 <td style="text-align:right;">
+0.5975366
+</td>
+<td style="text-align:right;">
+0.8376338
+</td>
+<td style="text-align:right;">
+29.8008049
+</td>
+<td style="text-align:right;">
+50
+</td>
+<td style="text-align:right;">
 80
 </td>
 <td style="text-align:right;">
@@ -1699,6 +1933,18 @@ MIX
 </td>
 <td style="text-align:right;">
 0.1497673
+</td>
+<td style="text-align:right;">
+0.4496394
+</td>
+<td style="text-align:right;">
+0.8087768
+</td>
+<td style="text-align:right;">
+11.1104906
+</td>
+<td style="text-align:right;">
+51
 </td>
 <td style="text-align:right;">
 21
@@ -1784,6 +2030,18 @@ MIX
 0.0499278
 </td>
 <td style="text-align:right;">
+0.8114722
+</td>
+<td style="text-align:right;">
+0.9868948
+</td>
+<td style="text-align:right;">
+59.0887044
+</td>
+<td style="text-align:right;">
+52
+</td>
+<td style="text-align:right;">
 154
 </td>
 <td style="text-align:right;">
@@ -1811,29 +2069,31 @@ NA
 </tbody>
 </table>
 </div>
-<p>Now, we can perform the meta-analysis and see if we get the same result as reported above. We use the <code>meta</code> package for this. For the fixed-effect model we get the exact same result. So the systematic reviewers performed a fixed-effect analysis.</p>
+<p>Now, we can perform the meta-analysis and see if we get the same result as reported above. We use the <code>meta</code> package for this. For the fixed-effect model we get the exact same estimate (and 95%-CI). So the systematic reviewers performed a fixed-effect analysis here.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>myma <span class="ot">=</span> <span class="fu">metabin</span>(<span class="at">event.e =</span> events1, <span class="at">n.e =</span> total1,</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">event.c =</span> events2, <span class="at">n.c =</span> total2,</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">RR.Cochrane =</span> <span class="cn">TRUE</span>, <span class="at">Q.Cochrane =</span> <span class="cn">TRUE</span>, <span class="at">sm =</span> <span class="st">&quot;RR&quot;</span>, <span class="at">data =</span> tab.studies)</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(myma)</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Number of studies combined: k = 17</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                          RR           95%-CI     z  p-value</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Fixed effect model   0.7600 [0.7135; 0.8095] -8.52 &lt; 0.0001</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Random effects model 0.7451 [0.6762; 0.8209] -5.95 &lt; 0.0001</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Quantifying heterogeneity:</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  tau^2 = 0.0120; tau = 0.1097; I^2 = 40.4% [0.0%; 66.5%]; H = 1.30 [1.00; 1.73]</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Test of heterogeneity:</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      Q d.f. p-value</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  26.84   16  0.0433</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Details on meta-analytical method:</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; - Mantel-Haenszel method</span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; - DerSimonian-Laird estimator for tau^2</span></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; - Mantel-Haenszel estimator used in calculation of Q and tau^2 (like RevMan 5)</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; - Continuity correction of 0.5 in studies with zero cell frequencies</span></span></code></pre></div>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Number of observations: o = 1838</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Number of events: e = 1177</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                          RR           95%-CI     z  p-value</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Fixed effect model   0.7600 [0.7135; 0.8095] -8.52 &lt; 0.0001</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Random effects model 0.7451 [0.6762; 0.8209] -5.95 &lt; 0.0001</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Quantifying heterogeneity:</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  tau^2 = 0.0120; tau = 0.1097; I^2 = 40.4% [0.0%; 66.5%]; H = 1.30 [1.00; 1.73]</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Test of heterogeneity:</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      Q d.f. p-value</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  26.84   16  0.0433</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Details on meta-analytical method:</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; - Mantel-Haenszel method</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; - DerSimonian-Laird estimator for tau^2</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; - Mantel-Haenszel estimator used in calculation of Q and tau^2 (like RevMan 5)</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; - Continuity correction of 0.5 in studies with zero cell frequencies</span></span></code></pre></div>
 </div>
 
 

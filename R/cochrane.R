@@ -66,7 +66,7 @@ parse.studies = function(file, path) {
                    outcome.nr = rep(NA, l), outcome.name = rep(NA, l), outcome.measure = rep(NA, l), outcome.id = rep(NA, l), outcome.flag = rep(NA, l),
                    subgroup.nr = rep(NA, l), subgroup.name = rep(NA, l), subgroup.id = rep(NA, l), 
                    study.id = rep(NA, l), study.name = rep(NA, l), study.year = rep(NA, l), study.data_source = rep(NA, l),
-                   effect = rep(NA, l), se = rep(NA, l),
+                   effect.size = rep(NA, l), se = rep(NA, l), ci.lower = rep(NA, l), ci.upper = rep(NA, l), weight = rep(NA, l), order = rep(NA, l),
                    events1 = rep(NA, l), total1 = rep(NA, l), mean1 = rep(NA, l), sd1 = rep(NA, l),
                    events2 = rep(NA, l), total2 = rep(NA, l), mean2 = rep(NA, l), sd2 = rep(NA, l))
   
@@ -166,16 +166,20 @@ parse.studies = function(file, path) {
               tab$study.year[k] = table.studies$year[idx]
               tab$study.data_source[k] = table.studies$data_source[idx]
               
-              tab$effect[k]  = as.numeric(html_attr(x = xml.data[d], name="EFFECT_SIZE"))
-              tab$se[k]      = as.numeric(html_attr(x = xml.data[d], name="SE"))
-              tab$events1[k] = as.numeric(html_attr(x = xml.data[d], name="EVENTS_1"))
-              tab$total1[k]  = as.numeric(html_attr(x = xml.data[d], name="TOTAL_1"))
-              tab$mean1[k]   = as.numeric(html_attr(x = xml.data[d], name="MEAN_1"))
-              tab$sd1[k]     = as.numeric(html_attr(x = xml.data[d], name="SD_1"))
-              tab$events2[k] = as.numeric(html_attr(x = xml.data[d], name="EVENTS_2"))
-              tab$total2[k]  = as.numeric(html_attr(x = xml.data[d], name="TOTAL_2"))
-              tab$mean2[k]   = as.numeric(html_attr(x = xml.data[d], name="MEAN_2"))
-              tab$sd2[k]     = as.numeric(html_attr(x = xml.data[d], name="SD_2"))
+              tab$effect.size[k]= as.numeric(html_attr(x = xml.data[d], name="EFFECT_SIZE"))
+              tab$se[k]         = as.numeric(html_attr(x = xml.data[d], name="SE"))
+              tab$ci.lower[k]   = as.numeric(html_attr(x = xml.data[d], name="CI_START"))
+              tab$ci.upper[k]   = as.numeric(html_attr(x = xml.data[d], name="CI_END"))
+              tab$weight[k]     = as.numeric(html_attr(x = xml.data[d], name="WEIGHT"))
+              tab$order [k]     = as.numeric(html_attr(x = xml.data[d], name="ORDER"))
+              tab$events1[k]    = as.numeric(html_attr(x = xml.data[d], name="EVENTS_1"))
+              tab$total1[k]     = as.numeric(html_attr(x = xml.data[d], name="TOTAL_1"))
+              tab$mean1[k]      = as.numeric(html_attr(x = xml.data[d], name="MEAN_1"))
+              tab$sd1[k]        = as.numeric(html_attr(x = xml.data[d], name="SD_1"))
+              tab$events2[k]    = as.numeric(html_attr(x = xml.data[d], name="EVENTS_2"))
+              tab$total2[k]     = as.numeric(html_attr(x = xml.data[d], name="TOTAL_2"))
+              tab$mean2[k]      = as.numeric(html_attr(x = xml.data[d], name="MEAN_2"))
+              tab$sd2[k]        = as.numeric(html_attr(x = xml.data[d], name="SD_2"))
               
               k = k + 1
             } # data loop
@@ -231,12 +235,13 @@ parse.ma = function(file, path) {
   
   tab = data.frame(id=rep(NA, l), 
                    outcome.id = rep(NA, l), name = rep(NA, l), outcome.flag = rep(NA, l),
-                   hasSubgroups = rep(NA, l), isSubgroup = rep(FALSE, l),
-                   effect = rep(NA, l), ci_start = rep(NA, l), ci_end = rep(NA, l),
+                   hasSubgroups = rep(NA, l), isSubgroup = rep(FALSE, l), effect.measure = rep(FALSE, l),
+                   effect.size = rep(NA, l), ci_start = rep(NA, l), ci_end = rep(NA, l),
                    z = rep(NA, l), p_z = rep(NA, l), estimable = rep(NA, l), studies = rep(NA, l),
                    hetero.chi2 = rep(NA, l), hetero.df = rep(NA, l), hetero.p_chi2 = rep(NA, l),
-                   I2 = rep(NA, l), tau2 = rep(NA, l), # tau is missing in XML, e.g. CD012282 CMP-004.01 
-                   total1 = rep(NA, l), total2 = rep(NA, l))
+                   I2 = rep(NA, l), tau2 = rep(NA, l), Q = rep(NA, l), p_Q = rep(NA, l), # tau is missing in XML, e.g. CD012282 CMP-004.01 
+                   total1 = rep(NA, l), total2 = rep(NA, l), random = rep(NA, l), totals = rep(NA, l),
+                   subgroups = rep(NA, l), subgroup.test = rep(NA, l))
   
   for (o in 1:length(xml.overall)) {
     
@@ -255,7 +260,8 @@ parse.ma = function(file, path) {
       tab$isSubgroup[o] = TRUE
     }
     
-    tab$effect[o] = as.numeric(html_attr(x = xml.overall[o], name="EFFECT_SIZE"))
+    tab$effect.measure[o] = html_attr(x = xml.overall[o], name="EFFECT_MEASURE")
+    tab$effect.size[o] = as.numeric(html_attr(x = xml.overall[o], name="EFFECT_SIZE"))
     tab$ci_start[o] = as.numeric(html_attr(x = xml.overall[o], name="CI_START"))
     tab$ci_end[o] = as.numeric(html_attr(x = xml.overall[o], name="CI_END"))
     tab$z[o] = as.numeric(html_attr(x = xml.overall[o], name="Z"))
@@ -270,9 +276,16 @@ parse.ma = function(file, path) {
     tab$I2[o] = as.numeric(html_attr(x = xml.overall[o], name="I2"))
     tab$tau2[o] = as.numeric(html_attr(x = xml.overall[o], name="TAU2"))
     
+    tab$Q[o] = as.numeric(html_attr(x = xml.overall[o], name="Q"))
+    tab$p_Q[o] = as.numeric(html_attr(x = xml.overall[o], name="P_Q"))
+    
     tab$total1[o] = as.numeric(html_attr(x = xml.overall[o], name="TOTAL_1"))
     tab$total2[o] = as.numeric(html_attr(x = xml.overall[o], name="TOTAL_2"))
     
+    tab$random[o] = html_attr(x = xml.overall[o], name="RANDOM")
+    tab$totals[o] = html_attr(x = xml.overall[o], name="TOTALS")
+    tab$subgroups[o] = html_attr(x = xml.overall[o], name="SUBGROUPS")
+    tab$subgroup.test[o] = html_attr(x = xml.overall[o], name="SUBGROUP_TEST")
   }
   
   # cleaning
