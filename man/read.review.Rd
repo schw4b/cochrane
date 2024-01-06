@@ -2,7 +2,8 @@
 % Please edit documentation in R/cochrane.R
 \name{read.review}
 \alias{read.review}
-\title{Reads all the data from a systematic review from a RevMan data file (XML) from the Cochrane Library, including both study data and meta-analytic data.}
+\title{Reads all the data from a systematic review from a RevMan data file (XML) from
+the Cochrane Library, including both study data and meta-analytic data.}
 \usage{
 read.review(file, path)
 }
@@ -12,8 +13,10 @@ read.review(file, path)
 \item{path}{path where data file is located.}
 }
 \value{
-a list with two objects (data.frames), a table of the study data, and a table of the meta-analytic data.
+a list with two objects (data.frames), a table of the study data, and
+a table of the meta-analytic data.
 }
 \description{
-Reads all the data from a systematic review from a RevMan data file (XML) from the Cochrane Library, including both study data and meta-analytic data.
+Reads all the data from a systematic review from a RevMan data file (XML) from
+the Cochrane Library, including both study data and meta-analytic data.
 }
