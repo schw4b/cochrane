@@ -1,8 +1,11 @@
-#' Reads all the data from a systematic review from a RevMan data file (XML) from the Cochrane Library, including both study data and meta-analytic data.
+#' Reads all the data from a systematic review from a RevMan data file (XML) from
+#'  the Cochrane Library, including both study data and meta-analytic data.
+#' 
 #' @param path path where data file is located.
 #' @param file  RevMan (.rm5) file name.
 #'
-#' @return a list with two objects (data.frames), a table of the study data, and a table of the meta-analytic data.
+#' @return a list with two objects (data.frames), a table of the study data, and 
+#' a table of the meta-analytic data.
 #' 
 #' @export
 read.review = function(file, path) {
@@ -13,6 +16,7 @@ read.review = function(file, path) {
 }
 
 #' Reads only study data.
+#' 
 #' @param path path where data file is located.
 #' @param file  RevMan (.rm5) file name.
 #'
@@ -192,6 +196,7 @@ parse.studies = function(file, path) {
 }
 
 #' Reads only meta-analytic data.
+#' 
 #' @param path path where data file is located.
 #' @param file  RevMan (.rm5) file name.
 #'
@@ -299,13 +304,14 @@ cleanstr = function(string) {
 }
 
 #' Gets the data directly from the Cochrane Library with a html session.
+#' 
 #' @param doi  doi address (full http URL or short version).
 #' @param path path to store data file.
 #' @param show.terms whether to show link to Cochrane's Terms and Conditions.
 #' 
 #' @export
 #' @importFrom httr content user_agent
-#' @importFrom rvest jump_to html_session
+#' @importFrom rvest session_jump_to session
 get.review = function(doi, path, show.terms = TRUE) {
   
   msg = "The data available are protected by copyright and may only be used in accordance with\nthe Terms and Conditions, see https://www.cochranelibrary.com/about/data-download.\nBy using the downloaded data you agree to these terms and conditions."
@@ -322,11 +328,11 @@ get.review = function(doi, path, show.terms = TRUE) {
   # create www session
   #ua = user_agent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36")
   ua = user_agent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36")
-  session_with_ua = html_session(url, ua)
+  session_with_ua = session(url, ua)
   if (!session_with_ua$response$status_code == 200) {
     message(paste(Sys.time(), "error: could not open html session for", id, "\n"))
   } else {
-    session_data = jump_to(session_with_ua, url_data) # jump to dataset
+    session_data = session_jump_to(session_with_ua, url_data) # jump to dataset
     
     # write to file if session is ok
     if (session_data$response$status_code == 200) {
