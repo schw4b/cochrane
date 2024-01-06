@@ -327,12 +327,12 @@ get.review = function(doi, path, show.terms = TRUE) {
   
   # create www session
   #ua = user_agent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36")
-  ua = user_agent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36")
-  session_with_ua = session(url, ua)
+  ua = httr::user_agent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36")
+  session_with_ua = rvest::session(url, ua)
   if (!session_with_ua$response$status_code == 200) {
     message(paste(Sys.time(), "error: could not open html session for", id, "\n"))
   } else {
-    session_data = session_jump_to(session_with_ua, url_data) # jump to dataset
+    session_data = rvest::session_jump_to(session_with_ua, url_data) # jump to dataset
     
     # write to file if session is ok
     if (session_data$response$status_code == 200) {
@@ -341,7 +341,7 @@ get.review = function(doi, path, show.terms = TRUE) {
         message(msg)
       }
       
-      bin = content(session_data$response, as = "raw")
+      bin = httr:content(session_data$response, as = "raw")
       writeBin(bin, file.path(path, file))
       message(paste(Sys.time(), "ok: download successful for", id, "\n"))
       
