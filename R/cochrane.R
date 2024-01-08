@@ -341,7 +341,7 @@ get.review = function(doi, path, show.terms = TRUE) {
         message(msg)
       }
       
-      bin = httr:content(session_data$response, as = "raw")
+      bin = httr::content(session_data$response, as = "raw")
       writeBin(bin, file.path(path, file))
       message(paste(Sys.time(), "ok: download successful for", id, "\n"))
       

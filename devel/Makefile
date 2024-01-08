@@ -6,4 +6,4 @@ build:
 	R CMD build cochrane
 
 check:
-	R CMD check --as-cran $(file)
+	R CMD check --as-cran cochrane_0.1.tar.gz

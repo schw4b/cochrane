@@ -1,3 +1,7 @@
-cochrane.Rproj
-.DS_Store
+.Rproj.user
 .Rhistory
+.RData
+.Ruserdata
+/doc/
+/Meta/
+.DS_Store
