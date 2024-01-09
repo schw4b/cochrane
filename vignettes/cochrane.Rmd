@@ -15,31 +15,35 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-The Cochrane Library is probably the largest body of evidence in health care. This packages loads data sets from systematic reviews from https://www.cochranelibrary.com that include all the study data, effect estimates, standard errors, sample sizes, the combined effect estimates from meta-analyses, and much more.
+The Cochrane Library is probably the largest body of evidence in health care. This packages loads data sets from systematic reviews from https://www.cochranelibrary.com that include all the study data, effect estimates, standard errors, sample sizes, the combined effect estimates from meta-analyses, and much more. The Cochrane Library data files are very well structured in XML and are called RevMan 5 files; they are available for each Cochrane Review. The R package `cochrane` can download these files given a http link (DOI) and parese all the information for the single studies and meta analysis.
 
-In this tutorial you load data from the Cochrane systematic review with ID `CD000059` titled "Clozapine versus typical neuroleptic medication for schizophrenia". The DOI is https://doi.org/10.1002/14651858.CD000059.pub2. We will then perform a meta-analysis of the comparison number 1, outcome number 3, as an example.
+In this tutorial you load data from the Cochrane systematic review with ID `CD000059` titled "Machine perfusion preservation versus static cold storage for deceased donor kidney transplantation". The DOI is https://doi.org/10.1002/14651858.CD011671.pub2. We will then perform a meta-analysis of the comparison number 1, outcome number 3, as an example.
 
 ## Loading libraries
 
-First we load the required packages for this tutorial. Obviously this is the `cochrane` package to access the data. The package `meta` is also required to perform the meta-analysis.
+First we load the required packages for this tutorial. Obviously this is the `cochrane` package to access the data. The package `meta` is also required to perform the meta-analysis. The package `fs` is used for the `path_home()` that returns the users home directory. We need this as we will first download the data into the Downloads folder, for example, and read it from there.
+
 ```{r, message=FALSE}
 library(cochrane)
 library(meta)
+library(fs)
 ```
 
 ## Loading the data
 
-You only need the DOI of the review and a folder were the file is downloaded.
+You only need the DOI of the review and a folder were the file should be downloaded to.
 ```{r}
-mydoi = c("https://doi.org/10.1002/14651858.CD000059.pub2")
-dl_path = "~/Downloads"
+mydoi = c("https://doi.org/10.1002/14651858.CD011671.pub2")
+dl_path = file.path(path_home(), "Downloads")
 
 get.review(doi = mydoi, dl_path, show.terms = TRUE)
 ```
+If a lot of data files are downloaded, the terms of use message can be disabled with the option `show.terms = FALSE`. This is best done by a simple for loop and adding a few seconds of short delay so that the Cochrane website is not penetrated too much, for example with `Sys.sleep(10)`.
 
-The other option to access the data is to go to the Website of that specific review (https://doi.org/10.1002/14651858.CD000059.pub2) and manually download the data file by clicking "Download Statistical Data" in the right box at the bottom. Once you have the data in your Download folder, the following command will load the data:
+The other option to access the data is to go to the Website of that specific review (https://doi.org/10.1002/14651858.CD011671.pub2) and manually download the data file by clicking "Download Data" on the right side. Once you have the data in your Download folder, the following command will load the data:
+
 ```{r}
-review = read.review(file = "CD000059StatsDataOnly.rm5", path = dl_path)
+review = read.review(file = "CD011671StatsDataOnly.rm5", path = dl_path)
 ```
 
 ## Working with the data
@@ -50,17 +54,17 @@ studies = review[[1]]
 ma = review[[2]]
 ```
 
-Let's select the meta-analysis we are interested in, comparison no. 1, outcome no. 3. The outcome was dichotomous (`DICH`), that is the number of patients "not clinical improved" (see outcome `name`). The combined effect estimate (here, risk ratio) is 0.76 (95%-CI from 0.71 to 0.81). This means the treatment group (Clozapine) had a 0.76-fold risk (aka a 24% reduction of risk) for no clinical improvement (compared to the control group).
+Let's select the meta-analysis we are interested in, comparison no. 1, outcome no. 1. The outcome was dichotomous (`DICH`), the number of patients that experienced delayed graft function, see outcome `name`. The combined effect estimate (here, a risk ratio) was 0.77 (95%-CI from 0.67 to 0.90). This means the treatment group (HMP; hypothermic machine perfusion) had a 0.77-fold risk (aka a 23% reduction of risk) of delayed graft function (compared to the control group with standard cold storage).
 ```{r}
-tab.ma = ma[ma$outcome.id == "CMP-001.03",]
+tab.ma = ma[ma$outcome.id == "CMP-001.01",]
 tab.ma
 ```
 
-Next, you can select the studies that belong to this meta-analysis (i.e., comparison 1, outcome 3). There were 17 study results in the meta-analyses. The outcome of the studies are seen in the variables `events1` and `events2` for the intervention and control arm, respectively. The first group is always the intervention arm by convention.
+Next, we can select the studies that belong to this meta-analysis (i.e., comparison 1, outcome 1). There were 14 study results in the meta-analyses. The outcome of the studies are seen in the variables `events1` and `events2` for the intervention and control arm, respectively. The first group is always the intervention arm by convention.
 
 ```{r}
-idx = studies$comparison.nr == 1 & studies$outcome.nr == 3
-tab.studies = studies[idx,]
+idx = studies$comparison.nr == 1 & studies$outcome.nr == 1
+tab.studies = studies[idx, c("study.name", "events1", "total1", "events2", "total2", "effect.size")]
 tab.studies
 ```
 Now, we can perform the meta-analysis and see if we get the same result as reported above. We use the `meta` package for this. For the fixed-effect model we get the exact same estimate (and 95%-CI). So the systematic reviewers performed a fixed-effect analysis here.
@@ -68,7 +72,14 @@ Now, we can perform the meta-analysis and see if we get the same result as repor
 ```{r}
 myma = metabin(event.e = events1, n.e = total1,
                event.c = events2, n.c = total2,
-               RR.Cochrane = TRUE, Q.Cochrane = TRUE, sm = "RR", data = tab.studies)
+               RR.Cochrane = TRUE, Q.Cochrane = TRUE, sm = "RR", data = tab.studies,
+               method.tau = "DL")
 summary(myma)
 ```
+
+```{r fig.height=6, fig.width=8}
+forest(myma, fontsize = 8)
+```
+
+We have successfully reproduced the meta analysis 1.1 of the systematic review, see (https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD011671.pub2/references#dataAndAnalyses) and click "Show forest plot". The systematic reviewers seem to have used a random effects meta-analysis using the DerSimonian-Laird estimator for tau.
 
