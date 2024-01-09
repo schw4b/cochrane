@@ -1,0 +1,8 @@
+bibentry(bibtype = "Misc",
+  title       = "cochrane: Import Data from the Cochrane Database of Systematic
+                 Reviews ({CDSR})",
+  author      = "Schwab, Simon",
+  institution = "Github",
+  year        =  2024,
+  language    = "en"
+  )

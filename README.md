@@ -13,6 +13,10 @@ The Cochrane Library is probably the largest body of evidence in health care. Th
 
     library(cochrane)
     
+### Please cite this package in your research output
+
+    citation("cochrane")
+    
 ### Open vignette
     
     vignette("cochrane")
