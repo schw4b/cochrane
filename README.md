@@ -1,4 +1,4 @@
-# cochrane: Import Data from the Cochrane Database of Systematic Reviews (CDSR)
+# cochrane: Import Data from the Cochrane Database of Systematic Reviews (CDSR) <img src="man/figures/cochrane_hex.png" align="right" width=120 height=139 alt="" />
 
 The Cochrane Library is probably the largest body of evidence in health care. This packages loads datasets from systematic reviews from https://www.cochranelibrary.com that include all the study data, effect estimates, and the combined effect estimates from meta-analyses.
 
@@ -7,7 +7,6 @@ The Cochrane Library is probably the largest body of evidence in health care. Th
 ### Installation from github
 
     remotes::install_github("schw4b/cochrane", build_vignettes = TRUE)
-
 
 ### Loading package
 
@@ -20,7 +19,6 @@ The Cochrane Library is probably the largest body of evidence in health care. Th
 ### Open vignette
     
     vignette("cochrane")
-
 
 ## Developer guide
 
