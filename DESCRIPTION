@@ -8,8 +8,8 @@ Authors@R:
            email = "schw4b@gmail.com",
            comment = c(ORCID = "0000-0002-1588-2689"))
 Description: The Cochrane Library is probably the lagest body of evidence in health care. This packages loads datasets from systematic reviews from <https://www.cochranelibrary.com/> that include all the study data, effect estimates, and the combined effect estimates from meta-analyses.
-Imports: xml2 (>= 1.3.2), rvest (>= 0.3.5), httr (>= 1.4.2)
-Suggests: knitr (>= 1.31), meta (>= 4.13-0), kableExtra (>= 1.3.4)
+Imports: xml2 (>= 1.3.2), rvest (>= 1.0.2), httr (>= 1.4.2)
+Suggests: knitr (>= 1.31), meta (>= 4.13-0), kableExtra (>= 1.3.4), fs (>= 1.6.2)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
