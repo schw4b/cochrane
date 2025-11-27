@@ -8,7 +8,7 @@ The Cochrane Library is probably the largest body of evidence in health care. Th
 
     remotes::install_github("schw4b/cochrane")
 
-To read a vignette (see below), the package must be installed as follows. Be aware that this process requires [Pandoc](https://pandoc.org/installing.html) for users who work with R directly rather than through RStudio.
+To read a vignette (see below), the package must be installed as follows. Be aware that this process requires [Pandoc](https://pandoc.org/installing.html) for users who work with R directly rather than through RStudio (RStudio includes its own copy of Pandoc.).
     
     remotes::install_github("schw4b/cochrane", build_vignettes = TRUE)
 
